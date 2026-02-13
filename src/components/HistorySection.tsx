@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { format, subDays } from 'date-fns';
 import { pl } from 'date-fns/locale';
-import { History, Droplets, Zap, Sparkles, CheckCircle } from 'lucide-react';
+import { History, Droplets, Zap, Sparkles, CheckCircle, Pill } from 'lucide-react';
 import { getDailyDataSync } from '../hooks/useLocalStorage';
 import type { DaySummary } from '../types';
 
 export const HistorySection: React.FC = () => {
-  const [history, setHistory] = useState<DaySummary[]>([]);
-
-  const loadHistory = useCallback(() => {
+  const getHistory = useCallback(() => {
     const last7Days: DaySummary[] = [];
     for (let i = 0; i < 7; i++) {
       const date = subDays(new Date(), i);
@@ -20,18 +18,21 @@ export const HistorySection: React.FC = () => {
         waterLiters: data.waterLiters,
         creatineTaken: data.creatineTaken,
         collagenTaken: data.collagenTaken,
+        supplementsTaken: data.supplementsTaken,
         todosDone: data.todos.filter(t => t.done).length,
         todosTotal: data.todos.length,
       });
     }
-    setHistory(last7Days);
+    return last7Days;
   }, []);
 
+  const [history, setHistory] = useState<DaySummary[]>(() => getHistory());
+
   useEffect(() => {
-    loadHistory();
-    window.addEventListener('storage-update', loadHistory);
-    return () => window.removeEventListener('storage-update', loadHistory);
-  }, [loadHistory]);
+    const handleUpdate = () => setHistory(getHistory());
+    window.addEventListener('storage-update', handleUpdate);
+    return () => window.removeEventListener('storage-update', handleUpdate);
+  }, [getHistory]);
 
   return (
     <section className="space-y-6 mt-12 pb-10">
@@ -59,6 +60,9 @@ export const HistorySection: React.FC = () => {
                 </span>
                 <span className={`p-1.5 rounded-lg ${day.collagenTaken ? 'bg-pink-100 dark:bg-pink-900/30 text-pink-600' : 'bg-slate-100 dark:bg-slate-700 text-slate-400'}`}>
                   <Sparkles size={14} />
+                </span>
+                <span className={`p-1.5 rounded-lg ${day.supplementsTaken ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600' : 'bg-slate-100 dark:bg-slate-700 text-slate-400'}`}>
+                  <Pill size={14} />
                 </span>
               </div>
             </div>
