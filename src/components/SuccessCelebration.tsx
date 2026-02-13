@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, Trophy, Sparkles } from 'lucide-react';
 
 interface SuccessCelebrationProps {
@@ -7,6 +7,7 @@ interface SuccessCelebrationProps {
 
 export const SuccessCelebration: React.FC<SuccessCelebrationProps> = ({ isAllDone }) => {
   const [isDismissed, setIsDismissed] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   // Reset dismissal if it's no longer all done (so it can pop up again when re-completed)
   if (!isAllDone && isDismissed) {
@@ -14,6 +15,14 @@ export const SuccessCelebration: React.FC<SuccessCelebrationProps> = ({ isAllDon
   }
 
   const isOpen = isAllDone && !isDismissed;
+
+  useEffect(() => {
+    if (isOpen && audioRef.current) {
+      audioRef.current.play().catch(err => {
+        console.warn("Audio playback failed (usually due to browser policy):", err);
+      });
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -55,16 +64,12 @@ export const SuccessCelebration: React.FC<SuccessCelebrationProps> = ({ isAllDon
           Dzięki! ❤️
         </button>
 
-        {/* Hidden YouTube player for music */}
-        <div className="hidden pointer-events-none">
-          <iframe
-            width="1"
-            height="1"
-            src="https://www.youtube.com/embed/8J1stp9AbOk?autoplay=1"
-            title="Skolim - Temperatura"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          />
-        </div>
+        {/* Hidden audio player for music */}
+        <audio
+          ref={audioRef}
+          src="./SKOLIM_IDELANIE.mp3"
+          className="hidden"
+        />
       </div>
     </div>
   );
