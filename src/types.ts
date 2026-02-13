@@ -9,6 +9,7 @@ export interface DailyData {
   waterLiters: number;
   creatineTaken: boolean;
   collagenTaken: boolean;
+  supplementsTaken: boolean;
   todos: Todo[];
 }
 
@@ -21,6 +22,7 @@ export interface DaySummary {
   waterLiters: number;
   creatineTaken: boolean;
   collagenTaken: boolean;
+  supplementsTaken: boolean;
   todosDone: number;
   todosTotal: number;
 }

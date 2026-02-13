@@ -10,6 +10,7 @@ const DEFAULT_DAILY_DATA: DailyData = {
   waterLiters: 0,
   creatineTaken: false,
   collagenTaken: false,
+  supplementsTaken: false,
   todos: [],
 };
 
@@ -34,11 +35,14 @@ export function useDailyData(date: Date) {
     return saved ? JSON.parse(saved) : DEFAULT_DAILY_DATA;
   });
 
-  useEffect(() => {
+  const [prevDateKey, setPrevDateKey] = useState(dateKey);
+
+  if (dateKey !== prevDateKey) {
+    setPrevDateKey(dateKey);
     const key = `daily_${dateKey}`;
     const saved = localStorage.getItem(key);
     setData(saved ? JSON.parse(saved) : DEFAULT_DAILY_DATA);
-  }, [dateKey]);
+  }
 
   const updateData = (newData: Partial<DailyData> | ((prev: DailyData) => DailyData)) => {
     setData(prev => {
