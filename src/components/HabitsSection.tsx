@@ -1,6 +1,6 @@
 import React from 'react';
 import type { DailyData, AppSettings } from '../types';
-import { Droplets, Zap, Sparkles, RefreshCcw, Plus } from 'lucide-react';
+import { Droplets, Zap, Sparkles, RefreshCcw, Plus, Pill } from 'lucide-react';
 
 interface HabitsSectionProps {
   data: DailyData;
@@ -77,7 +77,7 @@ export const HabitsSection: React.FC<HabitsSectionProps> = ({ data, settings, on
       </div>
 
       {/* Checkboxes */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-3">
         <button
           onClick={() => onUpdate({ creatineTaken: !data.creatineTaken })}
           className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${
@@ -86,9 +86,9 @@ export const HabitsSection: React.FC<HabitsSectionProps> = ({ data, settings, on
               : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400'
           }`}
         >
-          <Zap className={`mb-2 ${data.creatineTaken ? 'fill-amber-500' : ''}`} size={28} />
-          <span className="font-bold">Kreatyna</span>
-          <span className="text-xs mt-1">{data.creatineTaken ? 'Zrobione!' : 'Do zrobienia'}</span>
+          <Zap className={`mb-2 ${data.creatineTaken ? 'fill-amber-500' : ''}`} size={24} />
+          <span className="font-bold text-sm">Kreatyna</span>
+          <span className="text-[10px] mt-1">{data.creatineTaken ? 'Zrobione!' : 'Do zrobienia'}</span>
         </button>
 
         <button
@@ -99,9 +99,22 @@ export const HabitsSection: React.FC<HabitsSectionProps> = ({ data, settings, on
               : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400'
           }`}
         >
-          <Sparkles className={`mb-2 ${data.collagenTaken ? 'fill-pink-500' : ''}`} size={28} />
-          <span className="font-bold">Kolagen</span>
-          <span className="text-xs mt-1">{data.collagenTaken ? 'Zrobione!' : 'Do zrobienia'}</span>
+          <Sparkles className={`mb-2 ${data.collagenTaken ? 'fill-pink-500' : ''}`} size={24} />
+          <span className="font-bold text-sm">Kolagen</span>
+          <span className="text-[10px] mt-1">{data.collagenTaken ? 'Zrobione!' : 'Do zrobienia'}</span>
+        </button>
+
+        <button
+          onClick={() => onUpdate({ supplementsTaken: !data.supplementsTaken })}
+          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${
+            data.supplementsTaken
+              ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400'
+              : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400'
+          }`}
+        >
+          <Pill className={`mb-2 ${data.supplementsTaken ? 'fill-emerald-500' : ''}`} size={24} />
+          <span className="font-bold text-sm">Suple</span>
+          <span className="text-[10px] mt-1">{data.supplementsTaken ? 'Zrobione!' : 'Do zrobienia'}</span>
         </button>
       </div>
     </section>

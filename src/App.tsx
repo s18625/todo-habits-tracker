@@ -5,6 +5,7 @@ import { HabitsSection } from './components/HabitsSection';
 import { TodoSection } from './components/TodoSection';
 import { HistorySection } from './components/HistorySection';
 import { Settings } from './components/Settings';
+import { SuccessCelebration } from './components/SuccessCelebration';
 import { useAppSettings, useDailyData } from './hooks/useLocalStorage';
 
 function App() {
@@ -12,8 +13,16 @@ function App() {
   const [settings, setSettings] = useAppSettings();
   const [dailyData, updateDailyData] = useDailyData(currentDate);
 
+  const isAllDone =
+    dailyData.waterLiters >= settings.dailyWaterGoalLiters &&
+    dailyData.creatineTaken &&
+    dailyData.collagenTaken &&
+    dailyData.supplementsTaken &&
+    (dailyData.todos.length > 0 ? dailyData.todos.every(t => t.done) : true);
+
   return (
     <Layout>
+      <SuccessCelebration isAllDone={isAllDone} />
       <DateNav 
         currentDate={currentDate} 
         onDateChange={setCurrentDate} 
