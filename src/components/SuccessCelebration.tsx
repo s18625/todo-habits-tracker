@@ -55,16 +55,12 @@ export const SuccessCelebration: React.FC<SuccessCelebrationProps> = ({ isAllDon
           Dzięki! ❤️
         </button>
 
-        {/* Hidden YouTube player for music */}
-        <div className="hidden pointer-events-none">
-          <iframe
-            width="1"
-            height="1"
-            src="https://www.youtube.com/embed/8J1stp9AbOk?autoplay=1"
-            title="Skolim - Temperatura"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          />
-        </div>
+        {/* Hidden audio player for music */}
+        <audio
+          autoPlay
+          src="./SKOLIM_IDELANIE.mp3"
+          className="hidden"
+        />
       </div>
     </div>
   );
