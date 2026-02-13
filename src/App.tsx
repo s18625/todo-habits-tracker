@@ -14,7 +14,11 @@ function App() {
   const [dailyData, updateDailyData] = useDailyData(currentDate);
 
   const isAllDone =
-    dailyData.todos.length > 0 && dailyData.todos.every(t => t.done);
+    dailyData.waterLiters >= settings.dailyWaterGoalLiters &&
+    dailyData.creatineTaken &&
+    dailyData.collagenTaken &&
+    dailyData.supplementsTaken &&
+    (dailyData.todos.length > 0 ? dailyData.todos.every(t => t.done) : true);
 
   return (
     <Layout>
