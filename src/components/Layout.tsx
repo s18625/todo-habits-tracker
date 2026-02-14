@@ -26,7 +26,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </header>
       <main className="max-w-2xl mx-auto px-4 py-6 pb-20">
-        {children}
+        <div key={children?.toString()} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+          {children}
+        </div>
       </main>
     </div>
   );

@@ -1,6 +1,8 @@
 import React from 'react';
 import type { AppSettings } from '../types';
 import { Settings as SettingsIcon, Droplets } from 'lucide-react';
+import { CustomHabitsManager } from './CustomHabitsManager';
+import { DataManagement } from './DataManagement';
 
 interface SettingsProps {
   settings: AppSettings;
@@ -9,7 +11,7 @@ interface SettingsProps {
 
 export const Settings: React.FC<SettingsProps> = ({ settings, onUpdate }) => {
   return (
-    <section className="space-y-6 mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+    <section className="space-y-6">
       <h2 className="text-xl font-bold flex items-center gap-2">
         <SettingsIcon className="text-slate-500" size={24} />
         Ustawienia
@@ -39,6 +41,10 @@ export const Settings: React.FC<SettingsProps> = ({ settings, onUpdate }) => {
           </div>
         </div>
       </div>
+
+      <CustomHabitsManager settings={settings} onUpdate={onUpdate} />
+
+      <DataManagement />
     </section>
   );
 };

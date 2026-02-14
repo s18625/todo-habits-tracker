@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 
 const DEFAULT_SETTINGS: AppSettings = {
   dailyWaterGoalLiters: 2.5,
+  customHabits: [],
 };
 
 const DEFAULT_DAILY_DATA: DailyData = {
@@ -12,12 +13,23 @@ const DEFAULT_DAILY_DATA: DailyData = {
   collagenTaken: false,
   supplementsTaken: false,
   todos: [],
+  note: '',
+  habits: [],
 };
 
 export function useAppSettings() {
   const [settings, setSettings] = useState<AppSettings>(() => {
     const saved = localStorage.getItem('app_settings');
-    return saved ? JSON.parse(saved) : DEFAULT_SETTINGS;
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Migration: ensure customHabits exists
+      return {
+        ...DEFAULT_SETTINGS,
+        ...parsed,
+        customHabits: parsed.customHabits || [],
+      };
+    }
+    return DEFAULT_SETTINGS;
   });
 
   useEffect(() => {
@@ -32,7 +44,17 @@ export function useDailyData(date: Date) {
   const [data, setData] = useState<DailyData>(() => {
     const key = `daily_${dateKey}`;
     const saved = localStorage.getItem(key);
-    return saved ? JSON.parse(saved) : DEFAULT_DAILY_DATA;
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Migration: ensure new fields exist
+      return {
+        ...DEFAULT_DAILY_DATA,
+        ...parsed,
+        note: parsed.note || '',
+        habits: parsed.habits || [],
+      };
+    }
+    return DEFAULT_DAILY_DATA;
   });
 
   const [prevDateKey, setPrevDateKey] = useState(dateKey);
@@ -41,7 +63,17 @@ export function useDailyData(date: Date) {
     setPrevDateKey(dateKey);
     const key = `daily_${dateKey}`;
     const saved = localStorage.getItem(key);
-    setData(saved ? JSON.parse(saved) : DEFAULT_DAILY_DATA);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setData({
+        ...DEFAULT_DAILY_DATA,
+        ...parsed,
+        note: parsed.note || '',
+        habits: parsed.habits || [],
+      });
+    } else {
+      setData(DEFAULT_DAILY_DATA);
+    }
   }
 
   const updateData = (newData: Partial<DailyData> | ((prev: DailyData) => DailyData)) => {
@@ -62,5 +94,14 @@ export function useDailyData(date: Date) {
 export function getDailyDataSync(dateKey: string): DailyData {
   const key = `daily_${dateKey}`;
   const saved = localStorage.getItem(key);
-  return saved ? JSON.parse(saved) : DEFAULT_DAILY_DATA;
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    return {
+      ...DEFAULT_DAILY_DATA,
+      ...parsed,
+      note: parsed.note || '',
+      habits: parsed.habits || [],
+    };
+  }
+  return DEFAULT_DAILY_DATA;
 }
