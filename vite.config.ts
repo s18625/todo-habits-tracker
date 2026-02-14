@@ -10,17 +10,17 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['vite.svg'],
+      includeAssets: ['logo.svg'],
       manifest: {
-        name: 'DailyTracker - Todo + Habits',
-        short_name: 'DailyTracker',
+        name: 'DailyTracker 67',
+        short_name: 'Tracker67',
         description: 'Twoja osobista aplikacja do śledzenia nawyków i zadań',
         theme_color: '#3b82f6',
         background_color: '#ffffff',
         display: 'standalone',
         icons: [
           {
-            src: 'vite.svg',
+            src: 'logo.svg',
             sizes: 'any',
             type: 'image/svg+xml',
             purpose: 'any maskable'

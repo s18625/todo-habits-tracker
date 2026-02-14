@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { DateNav } from './components/DateNav';
 import { HabitsSection } from './components/HabitsSection';
@@ -11,8 +12,14 @@ import { Navigation } from './components/Navigation';
 import type { Tab } from './components/Navigation';
 import { DailyNote } from './components/DailyNote';
 import { useAppSettings, useDailyData } from './hooks/useLocalStorage';
+import { ShareDayPage } from './components/ShareDayPage';
+import { DailyShare } from './components/DailyShare';
+import { SummaryCard } from './components/SummaryCard';
+import { format } from 'date-fns';
+import { pl } from 'date-fns/locale';
+import type { SupplementsState } from './types';
 
-function App() {
+function MainApp() {
   const [activeTab, setActiveTab] = useState<Tab>('today');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [settings, setSettings] = useAppSettings();
@@ -25,11 +32,22 @@ function App() {
     return true;
   });
 
+  const supplements = dailyData.supplementsTaken as SupplementsState;
+  const morningSupps = settings.supplementsSettings.morning.enabled;
+  const afternoonSupps = settings.supplementsSettings.afternoon.enabled;
+  const eveningSupps = settings.supplementsSettings.evening.enabled;
+
+  const areSuppsDone = (
+    (!morningSupps || supplements.morning) &&
+    (!afternoonSupps || supplements.afternoon) &&
+    (!eveningSupps || supplements.evening)
+  );
+
   const isAllDone =
     dailyData.waterLiters >= settings.dailyWaterGoalLiters &&
     dailyData.creatineTaken &&
     dailyData.collagenTaken &&
-    dailyData.supplementsTaken &&
+    areSuppsDone &&
     (dailyData.todos.length > 0 ? dailyData.todos.every(t => t.done) : true) &&
     customHabitsDone;
 
@@ -58,6 +76,19 @@ function App() {
             note={dailyData.note || ''}
             onUpdate={(note) => updateDailyData({ note })}
           />
+
+          <DailyShare
+            currentDate={currentDate}
+          />
+
+          {/* Hidden card for PNG generation */}
+          <div className="fixed -left-[9999px] top-0 pointer-events-none" aria-hidden="true">
+            <SummaryCard
+              data={dailyData}
+              settings={settings}
+              dateLabel={format(currentDate, 'd MMMM yyyy', { locale: pl })}
+            />
+          </div>
         </div>
       )}
 
@@ -89,6 +120,18 @@ function App() {
         <p className="mt-1">Działa lokalnie w Twojej przeglądarce</p>
       </footer>
     </Layout>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainApp />} />
+        <Route path="/share/:date" element={<ShareDayPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 }
 

@@ -8,13 +8,17 @@ Prosta aplikacja webowa typu Todo + Daily Habits Tracker, działająca w przegl�
 - **Nawyki dzienne**:
   - Śledzenie spożycia wody (litry) z szybkimi przyciskami (+0.25L, +0.5L, +1.0L).
   - Pasek postępu wody względem dziennego celu.
-  - Checkboxy dla Kreatyny, Kolagenu i Suplementów.
+  - Checkboxy dla Kreatyny, Kolagenu.
+  - **Suplementy z podziałem na pory dnia**: Możliwość konfiguracji pór (rano, południe, wieczór) i ich ukrywania.
 - **Własne nawyki**: Możliwość dodawania własnych nawyków (typ checkbox lub liczba) w ustawieniach.
 - **Notatki**: Pole "Notatka dla dnia" do zapisywania przemyśleń.
 - **Statystyki i Wykresy**:
   - Podsumowanie 7 i 30 dni.
   - Wykresy spożycia wody i wykonanych zadań (ostatnie 14 dni).
   - Śledzenie serii (streaks) dla wody, kreatyny i kolagenu.
+- **Udostępnianie dnia**:
+  - Generowanie unikalnego linku do publicznego podsumowania dnia (read-only).
+  - Generowanie obrazka PNG z podsumowaniem do zapisu lub udostępnienia.
 - **Historia**: Podsumowanie ostatnich 7 dni (woda, nawyki, postęp zadań, notatki).
 - **PWA (Progressive Web App)**: Możliwość instalacji na telefonie/komputerze, działanie offline.
 - **Eksport/Import**: Możliwość pobrania wszystkich danych do pliku JSON i ich przywrócenia.
