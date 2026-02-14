@@ -21,6 +21,8 @@ export const HistorySection: React.FC = () => {
         supplementsTaken: data.supplementsTaken,
         todosDone: data.todos.filter(t => t.done).length,
         todosTotal: data.todos.length,
+        note: data.note,
+        habits: data.habits,
       });
     }
     return last7Days;
@@ -35,7 +37,7 @@ export const HistorySection: React.FC = () => {
   }, [getHistory]);
 
   return (
-    <section className="space-y-6 mt-12 pb-10">
+    <section className="space-y-6 pb-10">
       <h2 className="text-xl font-bold flex items-center gap-2">
         <History className="text-purple-500" size={24} />
         Historia (ostatnie 7 dni)
@@ -67,7 +69,7 @@ export const HistorySection: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-2 gap-4 text-sm mb-3">
               <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
                 <Droplets size={14} className="text-blue-500" />
                 <span>Woda: <strong>{day.waterLiters.toFixed(2)}L</strong></span>
@@ -77,6 +79,12 @@ export const HistorySection: React.FC = () => {
                 <span>Zadania: <strong>{day.todosDone}/{day.todosTotal}</strong></span>
               </div>
             </div>
+
+            {day.note && (
+              <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700 text-sm text-slate-600 dark:text-slate-400 italic">
+                {day.note}
+              </div>
+            )}
           </div>
         ))}
       </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { DailyData, AppSettings } from '../types';
 import { Droplets, Zap, Sparkles, RefreshCcw, Plus, Pill } from 'lucide-react';
+import { CustomHabitsDisplay } from './CustomHabitsDisplay';
 
 interface HabitsSectionProps {
   data: DailyData;
@@ -117,6 +118,12 @@ export const HabitsSection: React.FC<HabitsSectionProps> = ({ data, settings, on
           <span className="text-[10px] mt-1">{data.supplementsTaken ? 'Zrobione!' : 'Do zrobienia'}</span>
         </button>
       </div>
+
+      <CustomHabitsDisplay
+        data={data}
+        settings={settings}
+        onUpdate={onUpdate}
+      />
     </section>
   );
 };
