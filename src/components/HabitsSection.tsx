@@ -1,5 +1,5 @@
 import React from 'react';
-import type { DailyData, AppSettings } from '../types';
+import type { DailyData, AppSettings, SupplementsState } from '../types';
 import { Droplets, Zap, Sparkles, RefreshCcw, Plus, Pill } from 'lucide-react';
 import { CustomHabitsDisplay } from './CustomHabitsDisplay';
 
@@ -18,6 +18,17 @@ export const HabitsSection: React.FC<HabitsSectionProps> = ({ data, settings, on
 
   const resetWater = () => {
     onUpdate({ waterLiters: 0 });
+  };
+
+  const supplements = data.supplementsTaken as SupplementsState;
+
+  const toggleSupplement = (period: keyof SupplementsState) => {
+    onUpdate({
+      supplementsTaken: {
+        ...supplements,
+        [period]: !supplements[period]
+      }
+    });
   };
 
   return (
@@ -105,18 +116,38 @@ export const HabitsSection: React.FC<HabitsSectionProps> = ({ data, settings, on
           <span className="text-[10px] mt-1">{data.collagenTaken ? 'Zrobione!' : 'Do zrobienia'}</span>
         </button>
 
-        <button
-          onClick={() => onUpdate({ supplementsTaken: !data.supplementsTaken })}
-          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${
-            data.supplementsTaken
-              ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400'
-              : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400'
-          }`}
+        <div
+          className={`col-span-1 flex flex-col items-center justify-center p-4 rounded-2xl border transition-all bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400`}
         >
-          <Pill className={`mb-2 ${data.supplementsTaken ? 'fill-emerald-500' : ''}`} size={24} />
+          <Pill className="mb-2" size={24} />
           <span className="font-bold text-sm">Suple</span>
-          <span className="text-[10px] mt-1">{data.supplementsTaken ? 'Zrobione!' : 'Do zrobienia'}</span>
-        </button>
+          <div className="mt-2 flex flex-col gap-1 w-full">
+            {settings.supplementsSettings.morning.enabled && (
+              <button
+                onClick={() => toggleSupplement('morning')}
+                className={`text-[10px] font-bold py-1 px-2 rounded-lg border transition-all ${supplements.morning ? 'bg-emerald-500 text-white border-emerald-600' : 'bg-slate-50 dark:bg-slate-700 text-slate-400 border-slate-200 dark:border-slate-600'}`}
+              >
+                {settings.supplementsSettings.morning.label}
+              </button>
+            )}
+            {settings.supplementsSettings.afternoon.enabled && (
+              <button
+                onClick={() => toggleSupplement('afternoon')}
+                className={`text-[10px] font-bold py-1 px-2 rounded-lg border transition-all ${supplements.afternoon ? 'bg-emerald-500 text-white border-emerald-600' : 'bg-slate-50 dark:bg-slate-700 text-slate-400 border-slate-200 dark:border-slate-600'}`}
+              >
+                {settings.supplementsSettings.afternoon.label}
+              </button>
+            )}
+            {settings.supplementsSettings.evening.enabled && (
+              <button
+                onClick={() => toggleSupplement('evening')}
+                className={`text-[10px] font-bold py-1 px-2 rounded-lg border transition-all ${supplements.evening ? 'bg-emerald-500 text-white border-emerald-600' : 'bg-slate-50 dark:bg-slate-700 text-slate-400 border-slate-200 dark:border-slate-600'}`}
+              >
+                {settings.supplementsSettings.evening.label}
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
       <CustomHabitsDisplay
