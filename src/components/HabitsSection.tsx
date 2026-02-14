@@ -22,6 +22,12 @@ export const HabitsSection: React.FC<HabitsSectionProps> = ({ data, settings, on
 
   const supplements = data.supplementsTaken as SupplementsState;
 
+  const areSuppsDone = (
+    (!settings.supplementsSettings.morning.enabled || supplements.morning) &&
+    (!settings.supplementsSettings.afternoon.enabled || supplements.afternoon) &&
+    (!settings.supplementsSettings.evening.enabled || supplements.evening)
+  );
+
   const toggleSupplement = (period: keyof SupplementsState) => {
     onUpdate({
       supplementsTaken: {
@@ -117,10 +123,15 @@ export const HabitsSection: React.FC<HabitsSectionProps> = ({ data, settings, on
         </button>
 
         <div
-          className={`col-span-1 flex flex-col items-center justify-center p-4 rounded-2xl border transition-all bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400`}
+          className={`col-span-1 flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${
+            areSuppsDone
+              ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400'
+              : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400'
+          }`}
         >
-          <Pill className="mb-2" size={24} />
+          <Pill className={`mb-2 ${areSuppsDone ? 'fill-emerald-500' : ''}`} size={24} />
           <span className="font-bold text-sm">Suple</span>
+          <span className="text-[10px] mt-1">{areSuppsDone ? 'Zrobione!' : 'Do zrobienia'}</span>
           <div className="mt-2 flex flex-col gap-1 w-full">
             {settings.supplementsSettings.morning.enabled && (
               <button
